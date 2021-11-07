@@ -22,7 +22,6 @@ function loadCityList(data = {}) {
         error: function (err) {
             cityList = []
             clearCitiesTable()
-
         }
     });
 }
