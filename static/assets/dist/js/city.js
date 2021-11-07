@@ -22,7 +22,7 @@ function loadCityList(data = {}) {
         error: function (err) {
             cityList = []
             clearCitiesTable()
-            console.log(err)
+
         }
     });
 }
@@ -43,7 +43,7 @@ function addCitiesTableRow(data) {
     cols += '</td>';
 
     newRow.append(cols);
-    $(".table-cities").append(newRow);
+    $(".table-cities tbody").append(newRow);
     return true;
 };
 
@@ -59,7 +59,7 @@ function updateTableRow(data) {
 }
 
 function clearCitiesTable() {
-    $(".table-cities tr").remove();
+    $(".table-cities tbody").empty();
 }
 
 function clearFilters() {
@@ -89,6 +89,7 @@ $( document ).ready(function() {
         })
     })
     $('.import-button').on('click', function (e) {
+        $('.toast').toast('show');
         if(!$( '#fileImportInput' )[0]?.files?.[0]) return
 
         const data = new FormData();
