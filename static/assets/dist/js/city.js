@@ -1,7 +1,6 @@
 const BASE_URL = 'http://0.0.0.0:8000/main'
 let cityList = []
 
-
 function clearFormInput (form) {
     $(':input', form)
         .not(':button, :submit, :reset, :hidden')
@@ -10,11 +9,12 @@ function clearFormInput (form) {
         .prop('selected', false);
 }
 
-function loadCityList() {
+function loadCityList(data = {}) {
     $.ajax({
         url: `${ BASE_URL }/city`,
         type: 'GET',
         dataType: 'json',
+        data,
         success: function(res) {
             cityList = res
             res.forEach((i) => addCitiesTableRow(i))
@@ -28,15 +28,15 @@ function loadCityList() {
 }
 
 function addCitiesTableRow(data) {
-    var newRow = $("<tr>");
+    var newRow = $(`<tr data-id="${ data.id }">`);
     var cols = "";
 
-    cols += `<td>${ data.id }</td>`;
-    cols += `<td>${ data.name }</td>`;
-    cols += `<td>${ data.pollution_level_00 }</td>`;
-    cols += `<td>${ data.pollution_level_01 }</td>`;
-    cols += `<td>${ data.pollution_level_02 }</td>`;
-    cols += `<td>${ data.industries }</td>`;
+    cols += `<td class="row-id">${ data.id }</td>`;
+    cols += `<td class="row-name">${ data.name }</td>`;
+    cols += `<td class="row-pollution_level_00">${ data.pollution_level_00 }</td>`;
+    cols += `<td class="row-pollution_level_01">${ data.pollution_level_01 }</td>`;
+    cols += `<td class="row-pollution_level_02">${ data.pollution_level_02 }</td>`;
+    cols += `<td class="row-pollution_level_industries">${ data.industries }</td>`;
     cols += '<td>';
     cols +=     `<button data-id="${ data.id }" type="button" class="btn btn-primary edit-item-button">Edit</button>`;
     cols +=     `<button data-id="${ data.id }" type="button" class="btn btn-danger ml-3 delete-item-button">Delete</button>`;
@@ -44,8 +44,19 @@ function addCitiesTableRow(data) {
 
     newRow.append(cols);
     $(".table-cities").append(newRow);
-    return false;
+    return true;
 };
+
+function updateTableRow(data) {
+    const itemRow = $(".table-cities").find(`tr[data-id="${data.id}"]`)
+    if(!itemRow) return
+    itemRow.find('.row-name').html(data.name)
+    itemRow.find('.row-pollution_level_00').html(data.pollution_level_00)
+    itemRow.find('.row-pollution_level_01').html(data.pollution_level_01)
+    itemRow.find('.row-pollution_level_02').html(data.pollution_level_02)
+    itemRow.find('.row-pollution_level_industries').html(data.industries)
+    return true
+}
 
 function clearCitiesTable() {
     $(".table-cities tr").remove();
@@ -53,6 +64,23 @@ function clearCitiesTable() {
 
 $( document ).ready(function() {
     loadCityList()
+
+    $('.search-button').on('click', function (e) {
+        let name = $('#filter_name').val();
+        let pollution_level_00 = $('#filter_pollution_level_00').val();
+        let pollution_level_01 = $('#filter_pollution_level_01').val();
+        let pollution_level_02 = $('#filter_pollution_level_02').val();
+        let industries = $('#edit_industries').val();
+        clearCitiesTable()
+        loadCityList({
+            ...(name && { name }),
+            ...(pollution_level_00 && { pollution_level_00 }),
+            ...(pollution_level_01 && { pollution_level_01 }),
+            ...(pollution_level_02 && { pollution_level_02 }),
+            ...(industries && { industries })
+        })
+    })
+
     $('.save-create-changes-button').on('click', function (e) {
         let name = $('#create_name').val();
         let pollution_level_00 = $('#create_pollution_level_00').val();
@@ -124,8 +152,8 @@ $( document ).ready(function() {
             }})
             .done(function( data ) {
                 modal.attr('data-id', '')
-                clearCitiesTable()
-                loadCityList()
+                updateTableRow(data)
+                cityList = cityList.map(i => String(i.id) === id ? data : i)
                 $('.modal').modal('hide');
                 clearFormInput('#createForm')
             });
