@@ -54,16 +54,15 @@
     </tbody>
   </table>
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary btn-sm mb-3 btn" data-toggle="modal" data-target="#exampleModal">
+  <button type="button" class="btn btn-primary btn-sm mb-3 btn" data-toggle="modal" data-target="#createModal">
     Add new Air Quality
   </button>
-
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add new air quality</h5>
+          <h5 class="modal-title" id="createModalLabel">Add new air quality</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -71,30 +70,70 @@
         <div class="modal-body">
           <form id="createForm" method="get" action="">
             <div class="form-group">
-              <label for="name">Город</label>
-              <input type="text" required="true" class="form-control" id="name" placeholder="Риддер">
+              <label for="create_name">Город</label>
+              <input type="text" required="true" class="form-control" id="create_name" placeholder="Риддер">
             </div>
             <div class="form-group">
-              <label for="pollution_level_00">2000 г</label>
-              <input type="text" required="true" class="form-control" id="pollution_level_00" placeholder="10.00">
+              <label for="create_pollution_level_00">2000 г</label>
+              <input type="text" required="true" class="form-control" id="create_pollution_level_00" placeholder="10.0">
             </div>
             <div class="form-group">
-              <label for="pollution_level_01">2001 г</label>
-              <input type="text" required="true" class="form-control" id="pollution_level_01" placeholder="10.00">
+              <label for="create_pollution_level_01">2001 г</label>
+              <input type="text" required="true" class="form-control" id="create_pollution_level_01" placeholder="10.0">
             </div>
             <div class="form-group">
-              <label for="pollution_level_02">2002 г</label>
-              <input type="text" required="true" class="form-control" id="pollution_level_02" placeholder="10.00">
+              <label for="create_pollution_level_02">2002 г</label>
+              <input type="text" required="true" class="form-control" id="create_pollution_level_02" placeholder="10.0">
             </div>
             <div class="form-group">
-              <label for="industries">Отрасли промышленности, оказывающие влияние на загрязнение воздуха</label>
-              <input type="text" required="true" class="form-control" id="industries" placeholder="Энергетика, автотранспорт">
+              <label for="create_industries">Отрасли промышленности, оказывающие влияние на загрязнение воздуха</label>
+              <input type="text" required="true" class="form-control" id="create_industries" placeholder="Энергетика, автотранспорт">
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary save-changes-button">Save changes</button>
+          <button type="button" class="btn btn-primary save-create-changes-button">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit air quality</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="editForm" method="get" action="">
+            <div class="form-group">
+              <label for="edit_name">Город</label>
+              <input type="text" required="true" class="form-control" id="edit_name" placeholder="Риддер">
+            </div>
+            <div class="form-group">
+              <label for="edit_pollution_level_00">2000 г</label>
+              <input type="text" required="true" class="form-control" id="edit_pollution_level_00" placeholder="10.00">
+            </div>
+            <div class="form-group">
+              <label for="edit_pollution_level_01">2001 г</label>
+              <input type="text" required="true" class="form-control" id="edit_pollution_level_01" placeholder="10.00">
+            </div>
+            <div class="form-group">
+              <label for="edit_pollution_level_02">2002 г</label>
+              <input type="text" required="true" class="form-control" id="edit_pollution_level_02" placeholder="10.00">
+            </div>
+            <div class="form-group">
+              <label for="edit_industries">Отрасли промышленности, оказывающие влияние на загрязнение воздуха</label>
+              <input type="text" required="true" class="form-control" id="edit_industries" placeholder="Энергетика, автотранспорт">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary close-edit-changes-button" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary save-edit-changes-button">Save changes</button>
         </div>
       </div>
     </div>
