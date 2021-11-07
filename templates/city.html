@@ -1,5 +1,5 @@
 {% load static %}
-<!DOCTYPE HTML>
+<!DOCTYPE>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -23,9 +23,18 @@
 
   <p class="h4 mb-4">Air Qualities</p>
   <p>
-    <a class="btn btn-light" data-toggle="collapse" href="#filterCollapse" role="button" aria-expanded="false" aria-controls="filterCollapse">
-      <i class="bi bi-filter"></i> Filter
-    </a>
+  <div class="row">
+    <div class="col-12 col-sm-6">
+      <a class="btn btn-light" data-toggle="collapse" href="#filterCollapse" role="button" aria-expanded="false" aria-controls="filterCollapse">
+        <i class="bi bi-filter"></i> Filter
+      </a>
+    </div>
+    <div class="col-12 col-sm-6 text-left text-sm-right">
+      <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#importModal" size="small">
+        <i class="bi bi-arrow-up-circle"></i> Import
+      </button>
+    </div>
+  </div>
   </p>
   <div class="collapse" id="filterCollapse">
     <div class="card card-body">
@@ -36,16 +45,16 @@
             <input type="text" size="small" class="form-control" id="filter_name">
           </div>
           <div class="form-group col-12 col-md-3">
-            <label for="filter_pollution_level_01">2000 г</label>
+            <label for="filter_pollution_level_00">2000 г</label>
+            <input type="text" size="small" class="form-control" id="filter_pollution_level_00">
+          </div>
+          <div class="form-group col-12 col-md-3">
+            <label for="filter_pollution_level_01">2001 г</label>
             <input type="text" size="small" class="form-control" id="filter_pollution_level_01">
           </div>
           <div class="form-group col-12 col-md-3">
-            <label for="filter_pollution_level_02">2001 г</label>
-            <input type="text" size="small" class="form-control" id="filter_pollution_level_02">
-          </div>
-          <div class="form-group col-12 col-md-3">
             <label for="filter_pollution_level_02">2002 г</label>
-            <input type="text" size="small" class="form-control" id="filter_pollution_level_03">
+            <input type="text" size="small" class="form-control" id="filter_pollution_level_02">
           </div>
           <div class="form-group col-12 col-md-6">
             <label for="filter_industries">Отрасли промышленности, оказывающие влияние на загрязнение воздуха</label>
@@ -66,11 +75,11 @@
       <tr>
         <th>Id</th>
         <th>Город</th>
-        <th>2000 г</th>
-        <th>2001 г</th>
-        <th>2002 г</th>
+        <th style="width: 10%">2000 г</th>
+        <th style="width: 10%">2001 г</th>
+        <th style="width: 10%">2002 г</th>
         <th style="width: 40%">Отрасли промышленности, оказывающие влияние на загрязнение воздуха</th>
-        <th>Действие</th>
+        <th style="width: 20%">Действие</th>
       </tr>
     </thead>
     <tbody>
@@ -80,7 +89,32 @@
   <button type="button" class="btn btn-primary btn-sm mb-3 btn" data-toggle="modal" data-target="#createModal">
     Add new Air Quality
   </button>
+
   <!-- Modal -->
+  <div class="modal fade modalImport" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="importModalLabel">Import data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="fileImportInput">Please, select file</label>
+              <input type="file" class="form-control-file" id="fileImportInput" accept=".xls,.xlsx" >
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary import-button">import</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">

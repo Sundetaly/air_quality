@@ -39,7 +39,7 @@ function addCitiesTableRow(data) {
     cols += `<td class="row-pollution_level_industries">${ data.industries }</td>`;
     cols += '<td>';
     cols +=     `<button data-id="${ data.id }" type="button" class="btn btn-primary edit-item-button">Edit</button>`;
-    cols +=     `<button data-id="${ data.id }" type="button" class="btn btn-danger ml-3 delete-item-button">Delete</button>`;
+    cols +=     `<button data-id="${ data.id }" type="button" class="btn btn-danger ml-0 ml-lg-1 mt-1 mt-lg-0 delete-item-button">Delete</button>`;
     cols += '</td>';
 
     newRow.append(cols);
@@ -62,6 +62,14 @@ function clearCitiesTable() {
     $(".table-cities tr").remove();
 }
 
+function clearFilters() {
+    $('#filter_name').val('');
+    $('#filter_pollution_level_00').val('');
+    $('#filter_pollution_level_01').val('');
+    $('#filter_pollution_level_02').val('');
+    $('#edit_industries').val('');
+}
+
 $( document ).ready(function() {
     loadCityList()
 
@@ -70,7 +78,7 @@ $( document ).ready(function() {
         let pollution_level_00 = $('#filter_pollution_level_00').val();
         let pollution_level_01 = $('#filter_pollution_level_01').val();
         let pollution_level_02 = $('#filter_pollution_level_02').val();
-        let industries = $('#edit_industries').val();
+        let industries = $('#filter_industries').val();
         clearCitiesTable()
         loadCityList({
             ...(name && { name }),
@@ -79,6 +87,29 @@ $( document ).ready(function() {
             ...(pollution_level_02 && { pollution_level_02 }),
             ...(industries && { industries })
         })
+    })
+    $('.import-button').on('click', function (e) {
+        if(!$( '#fileImportInput' )[0]?.files?.[0]) return
+
+        const data = new FormData();
+        data.append( 'file', $( '#fileImportInput' )[0].files[0] );
+
+        $.ajax({
+            url: `${ BASE_URL }/city-import/`,
+            data,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function ( data ) {
+                $('#fileImportInput').val(undefined);
+                $('.modalImport').modal('hide');
+                clearFilters()
+                clearCitiesTable()
+                loadCityList()
+            }
+        });
+
+        e.preventDefault();
     })
 
     $('.save-create-changes-button').on('click', function (e) {
