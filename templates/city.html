@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link href="{% static 'assets/dist/css/style.css' %}" rel="stylesheet">
   <title>Air Qualities List</title>
 </head>
@@ -22,7 +22,7 @@
 
   <p class="h4 mb-4">Air Qualities</p>
 
-  <table class="table table-bordered table-striped">
+  <table class="table table-bordered table-striped table-cities">
     <thead class="thead-dark">
     <tr>
       <th>Id</th>
@@ -34,23 +34,7 @@
       <th>Действие</th>
     </tr>
     </thead>
-
     <tbody>
-    <tr th:each="temp : ${airQualities}">
-      <td th:text="${temp.id}" />
-      <td th:text="${temp.city}" />
-      <td th:text="${temp.firstValue}" />
-      <td th:text="${temp.secondValue}" />
-      <td th:text="${temp.thirdValue}" />
-      <td th:text="${temp.category}" />
-      <td >
-        <button type="button" class="btn btn-primary">Delete</button>
-        <!--                <a th:href="@{'/air-quality/delete/'+${temp.id}}">-->
-        <!--                    <p>Delete</p>-->
-        <!--                </a>-->
-        <button type="button" class="btn btn-danger ml-3">Danger</button>
-      </td>
-    </tr>
     </tbody>
   </table>
   <!-- Button trigger modal -->
@@ -63,28 +47,50 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Add new air quality</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <form id="createForm" method="get" action="">
+            <div class="form-group">
+              <label for="name">Город</label>
+              <input type="text" required="true" class="form-control" id="name" placeholder="Риддер">
+            </div>
+            <div class="form-group">
+              <label for="pollution_level_00">2000 г</label>
+              <input type="text" required="true" class="form-control" id="pollution_level_00" placeholder="10.00">
+            </div>
+            <div class="form-group">
+              <label for="pollution_level_01">2001 г</label>
+              <input type="text" required="true" class="form-control" id="pollution_level_01" placeholder="10.00">
+            </div>
+            <div class="form-group">
+              <label for="pollution_level_02">2002 г</label>
+              <input type="text" required="true" class="form-control" id="pollution_level_02" placeholder="10.00">
+            </div>
+            <div class="form-group">
+              <label for="industries">Отрасли промышленности, оказывающие влияние на загрязнение воздуха</label>
+              <input type="text" required="true" class="form-control" id="industries" placeholder="Энергетика, автотранспорт">
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-primary save-changes-button">Save changes</button>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="{% static 'assets/dist/js/city.js' %}"></script>
-
 </body>
 </html>
 

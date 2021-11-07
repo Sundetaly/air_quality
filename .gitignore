@@ -2,3 +2,4 @@
 __pycache__/
 *.sqlite3
 venv/
+setuptools-33.1.1.zip
