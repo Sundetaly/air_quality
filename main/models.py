@@ -1,8 +1,15 @@
 from django.db import models
 
+class BaseModel(models.Model):
+    created_date = models.DateTimeField(auto_now_add=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, null=True)
 
-class City(models.Model):
-    name = models.CharField(max_length=150)
+    class Meta:
+        abstract = True
+
+
+class City(BaseModel):
+    name = models.CharField(max_length=150, unique=True)
     pollution_level_00 = models.DecimalField(max_digits=10, decimal_places=1)
     pollution_level_01 = models.DecimalField(max_digits=10, decimal_places=1)
     pollution_level_02 = models.DecimalField(max_digits=10, decimal_places=1)
@@ -12,8 +19,8 @@ class City(models.Model):
         return self.name
 
 
-class District(models.Model):
-    name = models.CharField(max_length=250)
+class District(BaseModel):
+    name = models.CharField(max_length=250, unique=True)
     count_pesticide = models.IntegerField()
     name_pesticide = models.CharField(max_length=250, blank=True, null=True)
     name_banned_pesticide = models.CharField(max_length=250, blank=True, null=True)
