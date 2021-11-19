@@ -26,6 +26,10 @@ function loadDistrictList(data = {}) {
     });
 }
 
+function formatDate(str) {
+    return new Date(str).toLocaleString('ru-RU')
+}
+
 function addDistrictsTableRow(data) {
     var newRow = $(`<tr data-id="${ data.id }">`);
     var cols = "";
@@ -35,6 +39,8 @@ function addDistrictsTableRow(data) {
     cols += `<td class="row-count_pesticide">${ data.count_pesticide }</td>`;
     cols += `<td class="row-name_pesticide">${ data.name_pesticide }</td>`;
     cols += `<td class="row-name_banned_pesticide">${ data.name_banned_pesticide }</td>`;
+    cols += `<td class="row-modified_date">${ formatDate(data.modified_date) }</td>`;
+    cols += `<td class="row-created_date">${ formatDate(data.created_date) }</td>`;
     cols += '<td>';
     cols +=     `<button data-id="${ data.id }" type="button" class="btn btn-primary edit-item-button">Edit</button>`;
     cols +=     `<button data-id="${ data.id }" type="button" class="btn btn-danger ml-0 ml-lg-1 mt-1 mt-lg-0 delete-item-button">Delete</button>`;
@@ -52,6 +58,8 @@ function updateTableRow(data) {
     itemRow.find('.row-count_pesticide').html(data.count_pesticide)
     itemRow.find('.row-name_pesticide').html(data.name_pesticide)
     itemRow.find('.row-name_banned_pesticide').html(data.name_banned_pesticide)
+    itemRow.find('.row-modified_date').html(formatDate(data.modified_date))
+    itemRow.find('.row-created_date').html(formatDate(data.created_date))
     return true
 }
 
@@ -64,6 +72,14 @@ function clearFilters() {
     $('#filter_count_pesticide').val('');
     $('#filter_name_pesticide').val('');
     $('#filter_name_banned_pesticide').val('');
+}
+
+function generateError(errors) {
+    let error = ''
+    for (let i = 0; i < errors.length; i++) {
+        error += `${ errors[i] } <br/>`
+    }
+    return error
 }
 
 $( document ).ready(function() {
@@ -94,13 +110,28 @@ $( document ).ready(function() {
             data,
             processData: false,
             contentType: false,
-            type: 'POST',
-            success: function ( data ) {
-                $('#fileImportInput').val(undefined);
-                $('.modalImport').modal('hide');
-                clearFilters()
-                clearDistrictsTable()
-                loadDistrictList()
+            type: 'POST'
+        }).done(function ( data ) {
+            $('#fileImportInput').val(undefined);
+            $('.modalImport').modal('hide');
+            clearFilters()
+            clearDistrictsTable()
+            loadDistrictList()
+        }).catch((e) => {
+            if(e.status === 400) {
+
+                let errorMessage = e?.responseJSON && Array.isArray(e?.responseJSON) ? generateError(e?.responseJSON) : "Something went wrong!!!"
+                $.growl({
+                    title: "Error",
+                    message: errorMessage,
+                    style: "error"
+                });
+            } else {
+                $.growl({
+                    title: "Error",
+                    message: "Something went wrong!!!",
+                    style: "error"
+                });
             }
         });
 
@@ -126,7 +157,22 @@ $( document ).ready(function() {
                 clearFormInput('#createForm')
                 districtList.push(data)
                 addDistrictsTableRow(data)
-        });
+            }).catch((e) => {
+                if(e.status === 400) {
+                    let errorMessage = e?.responseJSON && Array.isArray(e?.responseJSON) ? generateError(e?.responseJSON) : "Something went wrong!!!"
+                    $.growl({
+                        title: "Error",
+                        message: errorMessage,
+                        style: "error"
+                    });
+                } else {
+                    $.growl({
+                        title: "Error",
+                        message: "Something went wrong!!!",
+                        style: "error"
+                    });
+                }
+            });
     })
 
     $(document).on('click', '.delete-item-button', function(event){
@@ -138,6 +184,21 @@ $( document ).ready(function() {
         })
         .done(function() {
             button.parent().parent().remove()
+        }).catch((e) => {
+            if(e.status === 400) {
+                let errorMessage = e?.responseJSON && Array.isArray(e?.responseJSON) ? generateError(e?.responseJSON) : "Something went wrong!!!"
+                $.growl({
+                    title: "Error",
+                    message: errorMessage,
+                    style: "error"
+                });
+            } else {
+                $.growl({
+                    title: "Error",
+                    message: "Something went wrong!!!",
+                    style: "error"
+                });
+            }
         });
     });
 
@@ -177,6 +238,21 @@ $( document ).ready(function() {
                 districtList = districtList.map(i => String(i.id) === id ? data : i)
                 $('.modal').modal('hide');
                 clearFormInput('#createForm')
-            });
+            }).catch((e) => {
+                if(e.status === 400) {
+                    let errorMessage = e?.responseJSON && Array.isArray(e?.responseJSON) ? generateError(e?.responseJSON) : "Something went wrong!!!"
+                    $.growl({
+                        title: "Error",
+                        message: errorMessage,
+                        style: "error"
+                    });
+                } else {
+                    $.growl({
+                        title: "Error",
+                        message: "Something went wrong!!!",
+                        style: "error"
+                    });
+                }
+        });
     });
 });

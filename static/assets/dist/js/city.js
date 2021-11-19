@@ -36,6 +36,8 @@ function addCitiesTableRow(data) {
     cols += `<td class="row-pollution_level_01">${ data.pollution_level_01 }</td>`;
     cols += `<td class="row-pollution_level_02">${ data.pollution_level_02 }</td>`;
     cols += `<td class="row-pollution_level_industries">${ data.industries }</td>`;
+    cols += `<td class="row-modified_date">${ formatDate(data.modified_date) }</td>`;
+    cols += `<td class="row-created_date">${ formatDate(data.created_date) }</td>`;
     cols += '<td>';
     cols +=     `<button data-id="${ data.id }" type="button" class="btn btn-primary edit-item-button">Edit</button>`;
     cols +=     `<button data-id="${ data.id }" type="button" class="btn btn-danger ml-0 ml-lg-1 mt-1 mt-lg-0 delete-item-button">Delete</button>`;
@@ -46,6 +48,11 @@ function addCitiesTableRow(data) {
     return true;
 };
 
+
+function formatDate(str) {
+    return new Date(str).toLocaleString('ru-RU')
+}
+
 function updateTableRow(data) {
     const itemRow = $(".table-cities").find(`tr[data-id="${data.id}"]`)
     if(!itemRow) return
@@ -54,6 +61,8 @@ function updateTableRow(data) {
     itemRow.find('.row-pollution_level_01').html(data.pollution_level_01)
     itemRow.find('.row-pollution_level_02').html(data.pollution_level_02)
     itemRow.find('.row-pollution_level_industries').html(data.industries)
+    itemRow.find('.row-modified_date').html(formatDate(data.modified_date))
+    itemRow.find('.row-created_date').html(formatDate(data.created_date))
     return true
 }
 
@@ -67,6 +76,14 @@ function clearFilters() {
     $('#filter_pollution_level_01').val('');
     $('#filter_pollution_level_02').val('');
     $('#edit_industries').val('');
+}
+
+function generateError(errors) {
+    let error = ''
+    for (let i = 0; i < errors.length; i++) {
+        error += `${ errors[i] } <br/>`
+    }
+    return error
 }
 
 $( document ).ready(function() {
@@ -99,13 +116,28 @@ $( document ).ready(function() {
             data,
             processData: false,
             contentType: false,
-            type: 'POST',
-            success: function ( data ) {
-                $('#fileImportInput').val(undefined);
-                $('.modalImport').modal('hide');
-                clearFilters()
-                clearCitiesTable()
-                loadCityList()
+            type: 'POST'
+        }).done(function ( data ) {
+            $('#fileImportInput').val(undefined);
+            $('.modalImport').modal('hide');
+            clearFilters()
+            clearCitiesTable()
+            loadCityList()
+        }).catch((e) => {
+            if(e.status === 400) {
+
+                let errorMessage = e?.responseJSON && Array.isArray(e?.responseJSON) ? generateError(e?.responseJSON) : "Something went wrong!!!"
+                $.growl({
+                    title: "Error",
+                    message: errorMessage,
+                    style: "error"
+                });
+            } else {
+                $.growl({
+                    title: "Error",
+                    message: "Something went wrong!!!",
+                    style: "error"
+                });
             }
         });
 
@@ -133,7 +165,23 @@ $( document ).ready(function() {
                 clearFormInput('#createForm')
                 cityList.push(data)
                 addCitiesTableRow(data)
-        });
+            }).catch((e) => {
+                if(e.status === 400) {
+
+                    let errorMessage = e?.responseJSON && Array.isArray(e?.responseJSON) ? generateError(e?.responseJSON) : "Something went wrong!!!"
+                    $.growl({
+                        title: "Error",
+                        message: errorMessage,
+                        style: "error"
+                    });
+                } else {
+                    $.growl({
+                        title: "Error",
+                        message: "Something went wrong!!!",
+                        style: "error"
+                    });
+                }
+            });
     })
 
     $(document).on('click', '.delete-item-button', function(event){
@@ -145,6 +193,21 @@ $( document ).ready(function() {
         })
         .done(function() {
             button.parent().parent().remove()
+        }).catch((e) => {
+            if(e.status === 400) {
+                let errorMessage = e?.responseJSON && Array.isArray(e?.responseJSON) ? generateError(e?.responseJSON) : "Something went wrong!!!"
+                $.growl({
+                    title: "Error",
+                    message: errorMessage,
+                    style: "error"
+                });
+            } else {
+                $.growl({
+                    title: "Error",
+                    message: "Something went wrong!!!",
+                    style: "error"
+                });
+            }
         });
     });
 
@@ -187,6 +250,22 @@ $( document ).ready(function() {
                 cityList = cityList.map(i => String(i.id) === id ? data : i)
                 $('.modal').modal('hide');
                 clearFormInput('#createForm')
-            });
+            }).catch((e) => {
+                if(e.status === 400) {
+                    let errorMessage = e?.responseJSON && Array.isArray(e?.responseJSON) ? generateError(e?.responseJSON) : "Something went wrong!!!"
+                    $.growl({
+                        title: "Error",
+                        message: errorMessage,
+                        style: "error"
+                    });
+                } else {
+                    $.growl({
+                        title: "Error",
+                        message: "Something went wrong!!!",
+                        style: "error"
+                    });
+                }
+        });
     });
 });
+
