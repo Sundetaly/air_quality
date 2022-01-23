@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
-from main.models import City, District, ImportRecord
+from main.models import CommonPesticide, ImportRecord
 
 
-class CitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = City
-        fields = '__all__'
+# class CitySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = City
+#         fields = '__all__'
 
 
 class ImportFileSerializer(serializers.Serializer):
@@ -18,7 +18,7 @@ class ImportFileSerializer(serializers.Serializer):
 
 class DistrictSerializer(serializers.ModelSerializer):
     class Meta:
-        model = District
+        model = CommonPesticide
         fields = '__all__'
 
 

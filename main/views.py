@@ -6,17 +6,17 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import CreateAPIView
 
-from main.models import City, District
-from main.serializers import CitySerializer, DistrictSerializer, ImportFileSerializer
-from main.import_excel import import_city, import_district
+from main.models import CommonPesticide
+from main.serializers import DistrictSerializer, ImportFileSerializer
+from main.import_excel import import_district
 
 
-class CityViewSet(ModelViewSet):
-    permission_classes = (AllowAny,)
-    queryset = City.objects.all()
-    serializer_class = CitySerializer
-    filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ('name', 'pollution_level_00', 'pollution_level_01', 'pollution_level_02', 'industries')
+# class CityViewSet(ModelViewSet):
+#     permission_classes = (AllowAny,)
+#     queryset = City.objects.all()
+#     serializer_class = CitySerializer
+#     filter_backends = (DjangoFilterBackend,)
+#     filterset_fields = ('name', 'pollution_level_00', 'pollution_level_01', 'pollution_level_02', 'industries')
 
 
 class CityImportFileView(CreateAPIView):
@@ -36,7 +36,7 @@ class CityImportFileView(CreateAPIView):
 
 class DistrictViewSet(ModelViewSet):
     permission_classes = (AllowAny,)
-    queryset = District.objects.all()
+    queryset = CommonPesticide.objects.all()
     serializer_class = DistrictSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('name', 'count_pesticide', 'name_pesticide', 'name_banned_pesticide')

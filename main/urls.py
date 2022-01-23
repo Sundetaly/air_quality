@@ -1,12 +1,12 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from main.views import CityViewSet, DistrictViewSet, CityImportFileView, DistrictImportFileView
+from main.views import DistrictViewSet, CityImportFileView, DistrictImportFileView
 
 app_name = 'main'
 
 router = DefaultRouter()
-router.register(r'city', CityViewSet, basename='city')
+# router.register(r'city', CityViewSet, basename='city')
 router.register(r'district', DistrictViewSet, basename='district')
 
 urlpatterns = [
