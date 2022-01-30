@@ -91,6 +91,7 @@ def import_preparation(df: DataFrame) -> List[Room]:
     for _, raw in df.iterrows():
         preparation_data = dict()
         preparation_data['region'] = get_or_create_region('Карасайский').id
+        preparation_data['name'] = raw['Название препарата']
         preparation_data['location'] = raw['Месторасположение хранилища']
         preparation_data['name_location'] = raw['Название хранилища']
         preparation_data['trade_name'] = raw['Торговое название']
