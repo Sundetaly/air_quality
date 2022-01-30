@@ -14,12 +14,11 @@ class Region(models.Model):
 
 # Table 1
 class Pesticide(models.Model):
-    name = models.CharField(max_length=250)
-    region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
-    location = models.CharField(max_length=255)
-    count_pesticide = models.IntegerField()
-    name_pesticide = models.CharField(max_length=250, blank=True, null=True)
-    name_banned_pesticide = models.CharField(max_length=250, blank=True, null=True)
+    region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True, verbose_name = "Регион")
+    location = models.CharField(max_length=255, verbose_name = "Место  расположение")
+    count_pesticide = models.IntegerField(verbose_name = "Кол-во пестицидов, кг")
+    name_pesticide = models.CharField(max_length=250, blank=True, null=True, verbose_name = "Наименование пестицидов")
+    name_banned_pesticide = models.CharField(max_length=250, blank=True, null=True, verbose_name = "Наименование запрещенных пестицидов")
 
     class Meta:
         verbose_name = "Пестицид"
@@ -55,15 +54,17 @@ class Analysis(models.Model):
 class Storage(models.Model):
     region = models.ForeignKey(Region,
                                on_delete=models.SET_NULL,
-                               null=True)
-    location = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
+                               null=True,
+                               verbose_name = "Регион")
+    location = models.CharField(max_length=255, verbose_name = "Месторасположение хранилище")
+    name = models.CharField(max_length=255, verbose_name = "Название хранилища")
     status = models.ForeignKey(StorageStatus,
                                on_delete=models.SET_NULL,
-                               null=True)
-    add_info = models.CharField(max_length=255, null=True)
-    obsolete_pesticides = models.CharField(max_length=255, null=True)
-    year = models.ForeignKey(Analysis, on_delete=models.SET_NULL, null=True)
+                               null=True,
+                               verbose_name = "Состояние хранилища")
+    add_info = models.CharField(max_length=255, null=True, verbose_name = "Дополнительная информация")
+    obsolete_pesticides = models.CharField(max_length=255, null=True, verbose_name = "Устаревшие пестициды, кг")
+    year = models.ForeignKey(Analysis, on_delete=models.SET_NULL, null=True, verbose_name = "Год")
 
     class Meta:
         verbose_name = "Хранилища"
@@ -77,11 +78,12 @@ class Storage(models.Model):
 class Room(models.Model):
     region = models.ForeignKey(Region,
                                on_delete=models.SET_NULL,
-                               null=True)
-    number_rooms = models.IntegerField()
-    number_un_rooms = models.IntegerField()
-    number_limit_pdk = models.IntegerField()
-    number_above_pdk = models.IntegerField()
+                               null=True,
+                               verbose_name = "Регион")
+    number_rooms = models.IntegerField(verbose_name = "Количество складских помещений")
+    number_un_rooms = models.IntegerField(verbose_name = "Количество складских помещений без загрязнения")
+    number_limit_pdk = models.IntegerField(verbose_name = "Количество территории, где количество пестицидов в пределах ПДК")
+    number_above_pdk = models.IntegerField(verbose_name = "Количество территории, где количество пестицидов выше ПДК")
 
     class Meta:
         verbose_name = "Помещения"
@@ -114,27 +116,31 @@ class TypeContainer(models.Model):
 class Preparation(models.Model):
     region = models.ForeignKey(Region,
                                on_delete=models.SET_NULL,
-                               null=True)
-    name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
-    name_location = models.CharField(max_length=255)
-    trade_name = models.CharField(max_length=255, null=True)
-    number = models.IntegerField()
+                               null=True,
+                               verbose_name = "Регион")
+    name = models.CharField(max_length=255, verbose_name = "Название препарата")
+    location = models.CharField(max_length=255, verbose_name = "Месторасположение хранилища")
+    name_location = models.CharField(max_length=255, verbose_name = "Название хранилища")
+    trade_name = models.CharField(max_length=255, null=True, verbose_name = "Торговое название")
+    number = models.IntegerField(verbose_name = "Количество")
     form = models.ForeignKey(FormPreparation,
                              on_delete=models.SET_NULL,
-                             null=True)
+                             null=True,
+                             verbose_name = "Препаративная форма")
     type_container = models.ForeignKey(TypeContainer,
                                        on_delete=models.SET_NULL,
                                        null=True,
-                                       related_name="preparation_types")
+                                       related_name="preparation_types",
+                                       verbose_name = "Тип контейнера")
     status_container = models.ForeignKey(TypeContainer,
                                          on_delete=models.SET_NULL,
                                          null=True,
-                                         related_name="preparation_statuses")
-    import_year = models.CharField(max_length=10, null=True)
-    birth = models.CharField(max_length=255, null=True)
-    add_info = models.CharField(max_length=255, null=True)
-    note = models.CharField(max_length=255, null=True)
+                                         related_name="preparation_statuses",
+                                         verbose_name = "Состояние контейнера")
+    import_year = models.CharField(max_length=10, null=True, verbose_name = "Год ввоза")
+    birth = models.CharField(max_length=255, null=True, verbose_name = "Происхождение")
+    add_info = models.CharField(max_length=255, null=True, verbose_name = "Дополнительная информация")
+    note = models.CharField(max_length=255, null=True, verbose_name = "Замечания")
 
     class Meta:
         verbose_name = "Препарат"
