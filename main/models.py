@@ -25,7 +25,7 @@ class Pesticide(models.Model):
         verbose_name_plural = "Пестициды"
 
     def __str__(self):
-        return self.name
+        return self.name_pesticide
 
 
 class StorageStatus(models.Model):
@@ -137,7 +137,7 @@ class Preparation(models.Model):
                                          null=True,
                                          related_name="preparation_statuses",
                                          verbose_name = "Состояние контейнера")
-    import_year = models.CharField(max_length=10, null=True, verbose_name = "Год ввоза")
+    import_year = models.CharField(max_length=255, null=True, verbose_name = "Год ввоза")
     birth = models.CharField(max_length=255, null=True, verbose_name = "Происхождение")
     add_info = models.CharField(max_length=255, null=True, verbose_name = "Дополнительная информация")
     note = models.CharField(max_length=255, null=True, verbose_name = "Замечания")
@@ -147,7 +147,7 @@ class Preparation(models.Model):
         verbose_name_plural = "Препараты"
 
     def __str__(self):
-        return self.name
+        return self.name_location
 
 
 class ImportRecord(models.Model):
